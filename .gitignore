@@ -1,0 +1,12 @@
+# Raw data: too large for GitHub and publicly available (D-006)
+datasets/raw/
+*.csv
+
+# Personal interview prep notes
+docs/interview_guide.md
+
+# macOS system files (copied over from the Mac)
+.DS_Store
+
+# Excel temporary lock files (exist while a workbook is open)
+~$*
