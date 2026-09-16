@@ -140,7 +140,30 @@ It is updated as the project progresses.
   - **Proof of work:** a steady commit history shows the project was built step by step, not uploaded in one go.
   - **Portfolio:** GitHub is where recruiters and hiring managers look at code.
 - **What is excluded (`.gitignore`):** raw CSV files (too large, and publicly available, see D-006) and personal prep notes.
+- **Where the project lives:** `C:\Projects\uk-road-collision-analytics` on the Windows drive, with Git for Windows.
+  - All tools (SSMS, Power BI, Excel, Git) run on Windows, matching a typical UK corporate setup.
+  - Running Git through the Parallels shared folder (`C:\Mac\Home\...`) was rejected: it causes permission, ownership and performance problems, and invites Git being run from both Mac and Windows on the same folder.
 - **Note:** Git was set up after Step 12, so the first commit contains all work up to that point.
+
+## D-017: How the bronze load is verified
+- **Decision:** A load only counts as successful after independent checks, saved in `tests/test_bronze_load.sql`:
+  1. **Reconciliation:** file line count (PowerShell) − 1 header = table row count.
+  2. **Year coverage:** every table covers 2021–2025.
+  3. **Hidden characters:** no CR (`CHAR(13)`) in the last column of any table.
+  4. **Visual check:** sample rows show values in the right columns.
+  5. **Sanity check:** the ratios between tables are realistic.
+- **Why:** "rows affected" is SQL Server reporting on itself. A load can finish without errors and still be wrong (rows missing, values shifted or corrupted). Each check catches a different kind of failure.
+- **Results (Step 13):**
+
+| Table | File lines | Rows loaded | Per collision |
+|---|---|---|---|
+| collision | 513,802 | 513,801 | 1 |
+| vehicle | 937,266 | 937,265 | ≈ 1.82 |
+| casualty | 652,822 | 652,821 | ≈ 1.27 |
+
+  - All tables cover 2021–2025, and the per-year counts add up to the totals.
+  - Hidden CR count: 0 in all three tables.
+- **Status:** Bronze layer complete and verified.
 
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*
