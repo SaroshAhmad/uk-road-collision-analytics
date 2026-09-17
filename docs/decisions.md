@@ -232,5 +232,15 @@ Applied to every silver table.
 - Values plausible: speed limits 20–70; latitude 49.91–60.50; longitude −7.49 to 1.76 (Isles of Scilly to Shetland, i.e. within Great Britain).
 - **Method note:** an index on `bronze.dft_code_list (table_name, field_name, code)` was added because the load joins that table 18 times.
 
+## D-024: Silver layer complete, rebuilt by a stored procedure
+- **Tables:** `silver.collision` (513,801), `silver.vehicle` (937,265), `silver.casualty` (652,821). Each has a primary key and matches its bronze source row for row.
+- **Decision:** the whole silver layer is rebuilt by one stored procedure, `silver.load_silver`, rather than by running scripts by hand.
+- **Why:**
+  - One command rebuilds everything in the right order, so the process cannot be run half-finished or out of sequence.
+  - It prints progress and per-table timings (collision 23s, vehicle 29s, casualty 17s; 69s in total), which makes slow steps visible.
+  - `TRY...CATCH` reports which statement failed and why, instead of dumping a raw error.
+  - It lives in the database, so it can be scheduled later (e.g. by SQL Server Agent) with no changes.
+- **Alternative considered:** keeping the plain `load_silver.sql` script. Rejected, and the file was deleted, because two copies of the same logic would drift apart. The procedure is now the single source of truth, saved as `scripts/02_silver/proc_load_silver.sql`.
+
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*
