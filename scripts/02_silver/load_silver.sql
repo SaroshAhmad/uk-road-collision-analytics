@@ -84,3 +84,55 @@ LEFT JOIN bronze.dft_code_list AS ch  ON ch.table_name ='collision' AND ch.field
 LEFT JOIN bronze.dft_code_list AS pa  ON pa.table_name ='collision' AND pa.field_name ='did_police_officer_attend_scene_of_accident' AND pa.code=NULLIF(c.did_police_officer_attend_scene_of_accident,'-1')
 LEFT JOIN bronze.dft_code_list AS tr  ON tr.table_name ='collision' AND tr.field_name ='trunk_road_flag'           AND tr.code =NULLIF(c.trunk_road_flag,'-1');
 GO
+
+-- ------------------------------------------------------------------
+-- Load: silver.vehicle from bronze.dft_vehicle
+-- ------------------------------------------------------------------
+
+TRUNCATE TABLE silver.vehicle;
+
+INSERT INTO silver.vehicle (
+    collision_index, vehicle_reference, vehicle_type, towing_and_articulation,
+    generic_make_model, vehicle_manoeuvre, junction_location, skidding_and_overturning,
+    hit_object_in_carriageway, vehicle_leaving_carriageway, hit_object_off_carriageway,
+    first_point_of_impact, journey_purpose_of_driver, sex_of_driver, age_of_driver,
+    age_band_of_driver, driver_imd_decile, engine_capacity_cc, age_of_vehicle, escooter_flag
+)
+SELECT
+    v.collision_index,
+    CAST(v.vehicle_reference AS SMALLINT),
+    ISNULL(vt.label,  'Not recorded'),
+    ISNULL(tow.label, 'Not recorded'),
+    NULLIF(v.generic_make_model, '-1'),
+    ISNULL(man.label, 'Not recorded'),
+    ISNULL(jl.label,  'Not recorded'),
+    ISNULL(sk.label,  'Not recorded'),
+    ISNULL(hic.label, 'Not recorded'),
+    ISNULL(lc.label,  'Not recorded'),
+    ISNULL(hoc.label, 'Not recorded'),
+    ISNULL(imp.label, 'Not recorded'),
+    ISNULL(jp.label,  'Not recorded'),
+    ISNULL(sex.label, 'Not recorded'),
+    TRY_CAST(NULLIF(v.age_of_driver, '-1') AS SMALLINT),
+    ISNULL(ab.label,  'Not recorded'),
+    ISNULL(imd.label, 'Not recorded'),
+    TRY_CAST(NULLIF(v.engine_capacity_cc, '-1') AS INT),
+    TRY_CAST(NULLIF(v.age_of_vehicle, '-1') AS SMALLINT),
+    ISNULL(es.label,  'Not recorded')
+FROM bronze.dft_vehicle AS v
+
+LEFT JOIN bronze.dft_code_list AS vt  ON vt.table_name ='vehicle' AND vt.field_name ='vehicle_type'                AND vt.code =NULLIF(v.vehicle_type,'-1')
+LEFT JOIN bronze.dft_code_list AS tow ON tow.table_name='vehicle' AND tow.field_name='towing_and_articulation'     AND tow.code=NULLIF(v.towing_and_articulation,'-1')
+LEFT JOIN bronze.dft_code_list AS man ON man.table_name='vehicle' AND man.field_name='vehicle_manoeuvre'           AND man.code=NULLIF(v.vehicle_manoeuvre,'-1')
+LEFT JOIN bronze.dft_code_list AS jl  ON jl.table_name ='vehicle' AND jl.field_name ='junction_location'           AND jl.code =NULLIF(v.junction_location,'-1')
+LEFT JOIN bronze.dft_code_list AS sk  ON sk.table_name ='vehicle' AND sk.field_name ='skidding_and_overturning'    AND sk.code =NULLIF(v.skidding_and_overturning,'-1')
+LEFT JOIN bronze.dft_code_list AS hic ON hic.table_name='vehicle' AND hic.field_name='hit_object_in_carriageway'   AND hic.code=NULLIF(v.hit_object_in_carriageway,'-1')
+LEFT JOIN bronze.dft_code_list AS lc  ON lc.table_name ='vehicle' AND lc.field_name ='vehicle_leaving_carriageway' AND lc.code =NULLIF(v.vehicle_leaving_carriageway,'-1')
+LEFT JOIN bronze.dft_code_list AS hoc ON hoc.table_name='vehicle' AND hoc.field_name='hit_object_off_carriageway'  AND hoc.code=NULLIF(v.hit_object_off_carriageway,'-1')
+LEFT JOIN bronze.dft_code_list AS imp ON imp.table_name='vehicle' AND imp.field_name='first_point_of_impact'       AND imp.code=NULLIF(v.first_point_of_impact,'-1')
+LEFT JOIN bronze.dft_code_list AS jp  ON jp.table_name ='vehicle' AND jp.field_name ='journey_purpose_of_driver'   AND jp.code =NULLIF(v.journey_purpose_of_driver,'-1')
+LEFT JOIN bronze.dft_code_list AS sex ON sex.table_name='vehicle' AND sex.field_name='sex_of_driver'               AND sex.code=NULLIF(v.sex_of_driver,'-1')
+LEFT JOIN bronze.dft_code_list AS ab  ON ab.table_name ='vehicle' AND ab.field_name ='age_band_of_driver'          AND ab.code =NULLIF(v.age_band_of_driver,'-1')
+LEFT JOIN bronze.dft_code_list AS imd ON imd.table_name='vehicle' AND imd.field_name='driver_imd_decile'           AND imd.code=NULLIF(v.driver_imd_decile,'-1')
+LEFT JOIN bronze.dft_code_list AS es  ON es.table_name ='vehicle' AND es.field_name ='escooter_flag'               AND es.code =NULLIF(v.escooter_flag,'-1');
+GO
