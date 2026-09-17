@@ -197,5 +197,40 @@ It is updated as the project progresses.
   - Driver age and sex **are** used, but always with an explicit "Unknown" category, and rates are calculated on known values with the unknown share stated.
   - Casualty-level fields are reliable enough to use directly.
 
+## D-020: Silver layer rules
+Applied to every silver table.
+1. **Decode codes into labels.** Coded columns are joined to `bronze.dft_code_list` on table + field + code, using `LEFT JOIN` so no row is ever lost. Verified on the collision table: the join left the row count unchanged at 513,801, so there is no fan-out.
+2. **Proper data types.** Dates become `DATE`, times `TIME`, whole numbers `INT`, coordinates `DECIMAL`. IDs stay text (D-010).
+3. **UK dates converted explicitly** with style 103 (`dd/mm/yyyy`), never left to SQL Server's default interpretation.
+4. **`-1` becomes NULL** in numeric columns, and the label `'Unknown'` in descriptive columns, so missing data is visible rather than counted as a real value.
+5. **Redundant columns are dropped:** easting/northing (latitude and longitude carry the same location), `collision_ref_no` (contained within `collision_index`), and the `_historic` columns (superseded by the current code versions).
+6. **Keys are enforced:** each silver table gets a primary key, so duplicates cannot enter unnoticed.
+7. **Full rebuild:** silver is always truncated and rebuilt from bronze, so re-running gives the same result.
+
+## D-021: The `_historic` columns are dropped
+- **Decision:** Silver keeps only the current-code columns (`junction_detail`, `vehicle_manoeuvre`, `carriageway_hazards` and so on) and drops their `_historic` versions.
+- **Why:**
+  - DfT changed the code lists in 2024 and provides both versions during the transition.
+  - Keeping both would mean the same fact appears twice in two coding systems, which invites double counting and confusion.
+  - The current codes are the ones the 2024 code list decodes, so they translate cleanly.
+- **Alternative considered:** converting the old codes to new ones using the guide's conversion sheet and merging the two. Rejected: the current columns are already populated for all years, so the conversion adds work without adding data.
+- **Trade-off to state openly:** if any current-code column turned out to be sparsely populated in earlier years, this choice would cost data. Checked during profiling and confirmed as populated throughout.
+
+## D-022: "Not recorded" and "Unknown" are kept apart
+- **Problem found (Step 21):** after the first silver load, 14,578 collisions showed unknown weather, but profiling had found only 12 `-1` values. The cause: DfT's own code `9` for `weather_conditions` is labelled "Unknown", and our transformation had turned `-1` into the same word. Two different meanings were collapsing into one.
+- **Decision:**
+  - `-1` becomes **`Not recorded`** — no value ever reached the dataset.
+  - DfT's own `Unknown` (and `unknown (self reported)`) labels are left exactly as published — the police recorded that the condition was unknown.
+- **Why:** they are different facts. Reporting "14,578 collisions have unknown weather" would overstate missing data by a factor of 1,200. Keeping them separate lets the report state honestly how much information is absent versus recorded as unknown.
+- **Verified:** after the fix, every "Not recorded" count matches the profiling figures exactly (junction 19,982; surface 3,527; light 34; weather 12; urban/rural 8; speed limit NULL 3), and weather now shows `Unknown` 14,566 and `Not recorded` 12 as separate categories.
+
+## D-023: Silver collision table verified (Step 21)
+- Row count matches bronze: 513,801.
+- **Date conversion proven correct:** the weekday calculated from the converted date matches DfT's own `day_of_week` on every row (0 mismatches), which rules out the dd/mm vs mm/dd error.
+- Date range 2021-01-01 to 2025-12-31, no missing times.
+- Severity distribution identical to bronze.
+- Values plausible: speed limits 20–70; latitude 49.91–60.50; longitude −7.49 to 1.76 (Isles of Scilly to Shetland, i.e. within Great Britain).
+- **Method note:** an index on `bronze.dft_code_list (table_name, field_name, code)` was added because the load joins that table 18 times.
+
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*

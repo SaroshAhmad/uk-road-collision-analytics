@@ -216,3 +216,9 @@ CREATE TABLE bronze.dft_code_list (
     note        NVARCHAR(500)   -- extra explanation, often blank
 );
 GO
+
+-- Index to speed up code lookups (table + field + code is how we always search it)
+CREATE NONCLUSTERED INDEX ix_code_list_lookup
+    ON bronze.dft_code_list (table_name, field_name, code)
+    INCLUDE (label);
+GO
