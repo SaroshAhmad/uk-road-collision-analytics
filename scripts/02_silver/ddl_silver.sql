@@ -75,3 +75,47 @@ CREATE TABLE silver.collision (
     CONSTRAINT pk_silver_collision PRIMARY KEY (collision_index)
 );
 GO
+
+-- ------------------------------------------------------------------
+-- Table : silver.vehicle
+-- Grain : one row per vehicle in a collision
+-- Key   : collision_index + vehicle_reference
+-- ------------------------------------------------------------------
+
+DROP TABLE IF EXISTS silver.vehicle;
+GO
+
+CREATE TABLE silver.vehicle (
+    collision_index             NVARCHAR(20)  NOT NULL,
+    vehicle_reference           SMALLINT      NOT NULL,
+
+    -- What kind of vehicle
+    vehicle_type                NVARCHAR(60)  NULL,
+    towing_and_articulation     NVARCHAR(60)  NULL,
+    generic_make_model          NVARCHAR(100) NULL,
+
+    -- What it was doing
+    vehicle_manoeuvre           NVARCHAR(60)  NULL,
+    junction_location           NVARCHAR(80)  NULL,
+    skidding_and_overturning    NVARCHAR(60)  NULL,
+    hit_object_in_carriageway   NVARCHAR(60)  NULL,
+    vehicle_leaving_carriageway NVARCHAR(60)  NULL,
+    hit_object_off_carriageway  NVARCHAR(60)  NULL,
+    first_point_of_impact       NVARCHAR(60)  NULL,
+    journey_purpose_of_driver   NVARCHAR(60)  NULL,
+
+    -- The driver
+    sex_of_driver               NVARCHAR(30)  NULL,
+    age_of_driver               SMALLINT      NULL,
+    age_band_of_driver          NVARCHAR(30)  NULL,
+    driver_imd_decile           NVARCHAR(40)  NULL,
+
+    -- Unreliable: 25-39% missing (D-019). Kept, but not used for conclusions.
+    engine_capacity_cc          INT           NULL,
+    age_of_vehicle              SMALLINT      NULL,
+
+    escooter_flag               NVARCHAR(30)  NULL,
+
+    CONSTRAINT pk_silver_vehicle PRIMARY KEY (collision_index, vehicle_reference)
+);
+GO
