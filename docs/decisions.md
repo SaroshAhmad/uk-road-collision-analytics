@@ -165,5 +165,37 @@ It is updated as the project progresses.
   - Hidden CR count: 0 in all three tables.
 - **Status:** Bronze layer complete and verified.
 
+## D-018: Profiling findings — collision table (Step 14)
+- **Grain confirmed:** 513,801 rows, 513,801 distinct `collision_index` values. One row per collision, and `collision_index` can be the primary key in silver.
+- **Critical columns:** no blanks in `collision_index`, `date`, `time` or `collision_severity`. 53 rows (0.01%) have no `longitude`/`latitude`.
+- **Missing codes (`-1`):** `junction_detail` 19,982 (3.9%); `road_surface_conditions` 3,527 (0.7%); `light_conditions` 34; `weather_conditions` 12; `urban_or_rural_area` 8; `speed_limit` 3; `road_type` 0.
+- **Severity split:** Fatal 7,553 (1.5%), Serious 116,813 (22.7%), Slight 389,435 (75.8%).
+- **Urban/rural:** Urban 345,314 (67.2%), Rural 168,429 (32.8%), Unallocated 50, missing 8.
+- **Decisions that follow:**
+  - Missing data is low enough that no column needs to be dropped for incompleteness.
+  - `-1` will become NULL in silver, with the label "Unknown" where a column is used as a dimension, so missing data is visible instead of silently counted as a real category.
+  - The 53 rows without coordinates are kept: they are valid collisions and only affect map visuals.
+  - Because fatal collisions are only 1.5% of rows, analysis will report **rates (percentage serious or fatal)** as well as counts, since raw counts would simply follow wherever traffic is heaviest.
+
+## D-019: Profiling findings — vehicle and casualty tables (Step 15)
+- **Grain confirmed:** vehicle 937,265 rows = 937,265 distinct `collision_index` + `vehicle_reference`; casualty 652,821 rows = 652,821 distinct `collision_index` + `casualty_reference`. Both composite keys are unique.
+- **Referential integrity:** 0 orphan vehicles and 0 orphan casualties. Every child row belongs to a collision that exists, so joins will not lose rows.
+- **Vehicle missing values:**
+
+| Column | Missing | Share |
+|---|---|---|
+| `age_of_vehicle` | 363,287 | 38.8% |
+| `engine_capacity_cc` | 234,989 | 25.1% |
+| `age_of_driver` | 142,240 | 15.2% |
+| `sex_of_driver` (unknown or missing) | 122,370 | 13.1% |
+| `vehicle_type` | 7,562 | 0.8% |
+
+- **Casualty missing values:** `age_of_casualty` 14,106 (2.2%), `sex_of_casualty` unknown 6,304 (1.0%), `casualty_severity` and `casualty_class` complete.
+- **Casualty severity:** Fatal 8,033, Serious 129,011, Slight 515,777.
+- **Decisions that follow:**
+  - `age_of_vehicle` and `engine_capacity_cc` are **not used as analysis dimensions**: with 25–39% missing, any pattern would say more about which vehicles get matched to records than about risk. They are kept in silver, flagged as unreliable.
+  - Driver age and sex **are** used, but always with an explicit "Unknown" category, and rates are calculated on known values with the unknown share stated.
+  - Casualty-level fields are reliable enough to use directly.
+
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*

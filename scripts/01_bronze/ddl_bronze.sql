@@ -197,3 +197,22 @@ CREATE TABLE bronze.dft_casualty (
     casualty_distance_banding            NVARCHAR(50)
 );
 GO
+
+-- ------------------------------------------------------------------
+-- Table   : bronze.dft_code_list
+-- Source  : 2024_code_list sheet of the DfT data guide (exported to CSV)
+-- Grain   : one row per code, per field, per table
+-- Purpose : Translates codes into labels (e.g. severity 2 = 'Serious')
+-- ------------------------------------------------------------------
+
+DROP TABLE IF EXISTS bronze.dft_code_list;
+GO
+
+CREATE TABLE bronze.dft_code_list (
+    table_name  NVARCHAR(50),   -- collision, vehicle or casualty
+    field_name  NVARCHAR(100),  -- the column the code belongs to
+    code        NVARCHAR(50),   -- the stored value
+    label       NVARCHAR(200),  -- what it means in words
+    note        NVARCHAR(500)   -- extra explanation, often blank
+);
+GO

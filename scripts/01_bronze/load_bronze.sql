@@ -69,3 +69,23 @@ WITH (
     TABLOCK
 );
 GO
+
+-- ------------------------------------------------------------------
+-- Load: bronze.dft_code_list
+-- NOTE: This file was created by Excel, so it uses Windows line
+--       endings (CRLF), unlike the DfT files which use LF (D-015).
+-- ------------------------------------------------------------------
+
+TRUNCATE TABLE bronze.dft_code_list;
+
+BULK INSERT bronze.dft_code_list
+FROM 'C:\sql_data\stats19\dft_code_list.csv'
+WITH (
+    FORMAT          = 'CSV',      -- essential: labels contain commas
+    FIRSTROW        = 2,          -- skip the header row
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR   = '0x0d0a',   -- CRLF, because Excel wrote this file
+    CODEPAGE        = '65001',
+    TABLOCK
+);
+GO
