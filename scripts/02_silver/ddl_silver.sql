@@ -119,3 +119,43 @@ CREATE TABLE silver.vehicle (
     CONSTRAINT pk_silver_vehicle PRIMARY KEY (collision_index, vehicle_reference)
 );
 GO
+
+-- ------------------------------------------------------------------
+-- Table : silver.casualty
+-- Grain : one row per casualty in a collision
+-- Key   : collision_index + casualty_reference
+-- ------------------------------------------------------------------
+
+DROP TABLE IF EXISTS silver.casualty;
+GO
+
+CREATE TABLE silver.casualty (
+    collision_index                    NVARCHAR(20)  NOT NULL,
+    casualty_reference                 SMALLINT      NOT NULL,
+    vehicle_reference                  SMALLINT      NULL,   -- which vehicle they were in
+
+    -- Who was hurt
+    casualty_class                     NVARCHAR(40)  NULL,   -- driver, passenger or pedestrian
+    sex_of_casualty                    NVARCHAR(30)  NULL,
+    age_of_casualty                    SMALLINT      NULL,
+    age_band_of_casualty               NVARCHAR(30)  NULL,
+    casualty_type                      NVARCHAR(80)  NULL,   -- e.g. Car occupant, Cyclist
+
+    -- How badly
+    casualty_severity_code             TINYINT       NOT NULL,
+    casualty_severity                  NVARCHAR(20)  NOT NULL,
+
+    -- Pedestrian detail
+    pedestrian_location                NVARCHAR(80)  NULL,
+    pedestrian_movement                NVARCHAR(120) NULL,
+    pedestrian_road_maintenance_worker NVARCHAR(40)  NULL,
+
+    -- Passenger detail
+    car_passenger                      NVARCHAR(40)  NULL,
+    bus_or_coach_passenger             NVARCHAR(60)  NULL,
+
+    casualty_imd_decile                NVARCHAR(40)  NULL,
+
+    CONSTRAINT pk_silver_casualty PRIMARY KEY (collision_index, casualty_reference)
+);
+GO
