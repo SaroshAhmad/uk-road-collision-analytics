@@ -242,5 +242,14 @@ Applied to every silver table.
   - It lives in the database, so it can be scheduled later (e.g. by SQL Server Agent) with no changes.
 - **Alternative considered:** keeping the plain `load_silver.sql` script. Rejected, and the file was deleted, because two copies of the same logic would drift apart. The procedure is now the single source of truth, saved as `scripts/02_silver/proc_load_silver.sql`.
 
+## D-025: Gold layer — star schema built as views
+- **Structure:** `gold.dim_date` (a real table, 1,826 days covering 2021–2025) plus three views: `gold.fact_collision` (513,801), `gold.fact_casualty` (652,821) and `gold.fact_vehicle` (937,265). Row counts verified unchanged, so the joins introduce no duplication.
+- **Why a star schema:** one central table of events surrounded by small tables of labels is the shape Power BI is built for. It keeps the model simple to explain and quick to filter.
+- **Why views rather than tables:** a view holds no data of its own and always reflects current silver, so there is nothing extra to reload or keep in step. Data volumes here are small enough that performance is not a concern; materialised tables would be the answer at much larger scale.
+- **Why a separate date table:** it supplies month names, quarters and weekend flags, keeps months in calendar order rather than alphabetical, and includes days on which nothing happened — which a date column derived from the data alone cannot do.
+- **Why 1/0 flag columns (`is_fatal`, `is_serious_or_fatal`):** summing them counts severe collisions and averaging them gives the **rate**. Rates, not counts, answer the insurer's question, because counts mostly follow traffic volume (D-018).
+- **Why `INNER JOIN` in the fact views** when silver used `LEFT JOIN`: profiling proved there are no orphan vehicles or casualties (D-019), so nothing can be lost. The silver joins were against a lookup table where a match was not guaranteed.
+- **Denormalisation note:** collision context (road type, weather, speed limit) is repeated inside the casualty and vehicle views. This duplicates data on purpose so those tables can be sliced without further joins — standard practice in a reporting layer, unlike in a transactional database.
+
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*
