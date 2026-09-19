@@ -251,5 +251,23 @@ Applied to every silver table.
 - **Why `INNER JOIN` in the fact views** when silver used `LEFT JOIN`: profiling proved there are no orphan vehicles or casualties (D-019), so nothing can be lost. The silver joins were against a lookup table where a match was not guaranteed.
 - **Denormalisation note:** collision context (road type, weather, speed limit) is repeated inside the casualty and vehicle views. This duplicates data on purpose so those tables can be sliced without further joins — standard practice in a reporting layer, unlike in a transactional database.
 
+## D-026: The rising severity trend is a recording change, not a road-safety change
+- **What looked true:** the serious-or-fatal rate rose every year, 22.51% (2021) to 26.24% (2025) — a 17% relative increase, with collision volumes flat.
+- **Why it was checked:** fatal collisions stayed flat (1,474 → 1,453; 1.43–1.51% of collisions). A death is hard to misclassify, so if roads had genuinely become more dangerous, deaths should have risen too.
+- **What the data showed:** police forces have been moving from officer-judgement severity to injury-based recording (the CRASH-style systems), and injury-based reporting classifies more injuries as serious.
+
+| Year | Injury-based share | Injury-based rate | Officer-judgement rate |
+|---|---|---|---|
+| 2021 | 50% | 26.50% | 18.59% |
+| 2023 | 54% | 28.04% | 19.18% |
+| 2025 | **87%** | 27.00% | 21.38% |
+
+- **The arithmetic confirms it:** (0.50 × 26.5) + (0.50 × 18.6) = 22.5% for 2021, and (0.87 × 27.0) + (0.13 × 21.4) = 26.2% for 2025 — matching the observed rates. Each method's own rate is roughly flat; only the mix changed.
+- **Decisions that follow:**
+  1. **Do not report a severity trend over time.** Where a trend is needed, use the **fatal** rate, which is unaffected by this change.
+  2. **All other comparisons pool 2021–2025**, so the method mix applies roughly equally across categories.
+  3. State this limitation explicitly in the README and dashboard.
+- **Why it matters:** the naive reading — "UK roads became 17% more dangerous since 2021" — would have been wrong, and is the sort of claim a portfolio project publishes without checking.
+
 ---
 *Upcoming decisions (to be added when we reach them): database design, data loading method, cleaning rules, data model, dashboard design.*
