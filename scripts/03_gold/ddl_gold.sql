@@ -66,3 +66,134 @@ SELECT
 FROM date_series
 OPTION (MAXRECURSION 0);   -- allow more than the default 100 loops
 GO
+
+-- ------------------------------------------------------------------
+-- View  : gold.fact_collision
+-- Grain : one row per collision
+-- Note  : A view, so it always reflects current silver data.
+-- ------------------------------------------------------------------
+
+CREATE OR ALTER VIEW gold.fact_collision AS
+SELECT
+    -- Keys
+    c.collision_index,
+    c.collision_date            AS date_key,   -- joins to gold.dim_date
+
+    -- Time of day
+    c.collision_time,
+    DATEPART(HOUR, c.collision_time) AS hour_of_day,
+
+    -- Severity
+    c.collision_severity_code,
+    c.collision_severity,
+
+    -- Flags: 1 or 0, so they can be summed and averaged into rates
+    CASE WHEN c.collision_severity_code = 1 THEN 1 ELSE 0 END AS is_fatal,
+    CASE WHEN c.collision_severity_code = 2 THEN 1 ELSE 0 END AS is_serious,
+    CASE WHEN c.collision_severity_code IN (1,2) THEN 1 ELSE 0 END AS is_serious_or_fatal,
+
+    -- Counts
+    c.number_of_vehicles,
+    c.number_of_casualties,
+
+    -- Where
+    c.police_force,
+    c.local_authority_district,
+    c.local_authority_ons_code,
+    c.urban_or_rural_area,
+    c.latitude,
+    c.longitude,
+
+    -- Road
+    c.road_type,
+    c.speed_limit,
+    c.first_road_class,
+    c.junction_detail,
+    c.junction_control,
+
+    -- Conditions
+    c.light_conditions,
+    c.weather_conditions,
+    c.road_surface_conditions,
+    c.carriageway_hazards,
+
+    -- Reporting
+    c.police_attended,
+    c.trunk_road_flag
+FROM silver.collision AS c;
+GO
+
+-- ------------------------------------------------------------------
+-- View  : gold.fact_casualty
+-- Grain : one row per casualty
+-- ------------------------------------------------------------------
+
+CREATE OR ALTER VIEW gold.fact_casualty AS
+SELECT
+    cas.collision_index,
+    cas.casualty_reference,
+    col.collision_date AS date_key,
+
+    cas.casualty_class,
+    cas.casualty_type,
+    cas.sex_of_casualty,
+    cas.age_of_casualty,
+    cas.age_band_of_casualty,
+
+    cas.casualty_severity_code,
+    cas.casualty_severity,
+    CASE WHEN cas.casualty_severity_code = 1 THEN 1 ELSE 0 END AS is_fatal,
+    CASE WHEN cas.casualty_severity_code IN (1,2) THEN 1 ELSE 0 END AS is_serious_or_fatal,
+
+    -- Collision context, so casualties can be sliced without extra joins
+    col.urban_or_rural_area,
+    col.road_type,
+    col.speed_limit,
+    col.light_conditions,
+    col.weather_conditions,
+    col.police_force
+FROM silver.casualty AS cas
+INNER JOIN silver.collision AS col
+        ON col.collision_index = cas.collision_index;
+GO
+
+
+-- ------------------------------------------------------------------
+-- View  : gold.fact_vehicle
+-- Grain : one row per vehicle in a collision
+-- ------------------------------------------------------------------
+
+CREATE OR ALTER VIEW gold.fact_vehicle AS
+SELECT
+    v.collision_index,
+    v.vehicle_reference,
+    col.collision_date AS date_key,
+
+    v.vehicle_type,
+    v.vehicle_manoeuvre,
+    v.first_point_of_impact,
+    v.junction_location,
+    v.skidding_and_overturning,
+    v.journey_purpose_of_driver,
+
+    v.sex_of_driver,
+    v.age_of_driver,
+    v.age_band_of_driver,
+
+    -- Collision context
+    col.collision_severity,
+    CASE WHEN col.collision_severity_code IN (1,2) THEN 1 ELSE 0 END AS is_serious_or_fatal,
+    col.urban_or_rural_area,
+    col.road_type,
+    col.speed_limit,
+    col.light_conditions,
+    col.weather_conditions
+FROM silver.vehicle AS v
+INNER JOIN silver.collision AS col
+        ON col.collision_index = v.collision_index;
+GO
+
+SELECT
+    (SELECT COUNT(*) FROM gold.fact_collision) AS collisions,   -- 513801
+    (SELECT COUNT(*) FROM gold.fact_casualty)  AS casualties,   -- 652821
+    (SELECT COUNT(*) FROM gold.fact_vehicle)   AS vehicles;     -- 937265
