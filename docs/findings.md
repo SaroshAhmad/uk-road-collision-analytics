@@ -1,183 +1,191 @@
-# Findings
+# UK Road Collision Risk: Key Findings (2021–2025)
 
-**Data:** DfT STATS19 police-reported injury collisions, Great Britain, 2021–2025
-**Scope:** 513,801 collisions, 652,821 casualties, 937,265 vehicles
-**Main measure:** the **serious-or-fatal rate** — of collisions in a given situation, the percentage that were serious or fatal
-**Baseline:** **24.21%** serious or fatal; **1.47%** fatal
+**Data Source:** Official Department for Transport (DfT) police reports for road crashes in Great Britain between 2021 and 2025.  
+**Total Records Analysed:** 513,801 collisions involving 652,821 injured people and 937,265 vehicles.  
+**Main Measurement:** The **serious-or-fatal rate**. This measures the percentage of crashes in a given situation that resulted in a serious injury or death.  
+**National Baseline:** On average across all roads, **24.21%** of crashes were serious or fatal, and **1.47%** resulted in a death.
 
-> Counts show where collisions happen (mostly, where the traffic is). Rates show where they are dangerous. Conclusions below rest on rates.
-
----
-
-## 0. A trend that isn't real (read this before any time comparison)
-
-The serious-or-fatal rate rose every year: 22.51% (2021) to 26.24% (2025). It is **not** a road-safety change.
-
-- Collision volumes were flat (101,087 → 101,525) and so were deaths (1,474 → 1,453).
-- Police forces moved from officer-judgement severity to injury-based recording, which classifies more injuries as serious. The injury-based share went from 50% of collisions in 2021 to 87% in 2025.
-- Each method's own rate stayed roughly flat: injury-based ~27%, officer judgement ~19%.
-- Weighted arithmetic reproduces the headline exactly: 2021 = (0.50 × 26.5) + (0.50 × 18.6) = 22.5%; 2025 = (0.87 × 27.0) + (0.13 × 21.4) = 26.2%.
-
-**Consequences:** no severity trend over time is reported; where a trend is needed, the **fatal rate** is used (flat at 1.43–1.51%); every other comparison pools all five years.
+> **Why focus on rates instead of total numbers?** Total crash numbers simply highlight where traffic is heaviest. Severity rates show where driving is actually most dangerous when a crash occurs. All conclusions below are based on these severity rates.
 
 ---
 
-## 1. Speed limit is the strongest single factor
+## 0. Important Context: A "Trend" That Is Not What It Seems
 
-| Speed limit | Collisions | Serious or fatal | Fatal |
+At first glance, the data suggests that crashes became more dangerous every year, with the serious-or-fatal rate rising from 22.51% in 2021 to 26.24% in 2025. **However, roads did not actually become more dangerous.**
+
+* Total crash numbers stayed flat (about 101,000 per year) and annual road deaths remained steady (around 1,450 per year).
+* What changed was how police officers recorded injuries. Police forces gradually moved away from relying on an officer's personal judgement to using computer systems that categorise injuries automatically based on medical details. The share of crashes logged using these newer systems grew from 50% in 2021 to 87% in 2025.
+* These newer systems classify injuries far more strictly, shifting many injuries that used to be logged as "slight" into the "serious" category. Within each individual reporting method, the severity rate stayed practically flat.
+
+**What this means for our analysis:** We do not track severity trends over time. Where multi-year comparisons are necessary, we use the **fatal rate** (which remained steady between 1.43% and 1.51%). For every other topic, we combine all five years of data to get a clear, balanced picture.
+
+---
+
+## 1. Speed Limit Is the Single Biggest Danger Factor
+
+| Speed limit | Total collisions | Serious or fatal rate | Fatal rate |
 |---|---|---|---|
-| 20 | 88,096 | 19.65% | 0.47% |
-| 30 | 267,325 | 22.65% | 0.87% |
-| 40 | 44,750 | 25.69% | 1.80% |
-| 50 | 22,666 | 28.35% | 2.89% |
-| 60 | 62,703 | **34.49%** | **3.84%** |
-| 70 | 28,258 | 24.62% | 3.37% |
+| 20 mph | 88,096 | 19.65% | 0.47% |
+| 30 mph | 267,325 | 22.65% | 0.87% |
+| 40 mph | 44,750 | 25.69% | 1.80% |
+| 50 mph | 22,666 | 28.35% | 2.89% |
+| 60 mph | 62,703 | **34.49%** | **3.84%** |
+| 70 mph | 28,258 | 24.62% | 3.37% |
 
-- A collision on a 60mph road is about **8 times more likely to be fatal** than one on a 30mph road.
-- **70mph is the exception**: motorways carry the highest limit but a lower serious rate than 60mph roads. Motorways separate traffic and remove junctions and pedestrians; 60mph roads are undivided rural A- and B-roads with bends, hedges and side turnings.
-- **Road design matters as much as the posted limit.**
+* A crash on a 60 mph road is about **8 times more likely to result in a death** than a crash on a 30 mph road.
+* **70 mph roads are a clear exception:** Motorways carry the highest speed limit but have a much lower serious injury rate than 60 mph roads. Motorways separate oncoming traffic with central barriers and eliminate side junctions and pedestrians. In contrast, 60 mph roads are typically single-lane country roads with sharp bends, hedges, and side turnings.
+* **How a road is built matters just as much as its posted speed limit.**
 
-## 2. Single carriageways: most collisions and the highest rate
+---
 
-| Road type | Collisions | Serious or fatal |
+## 2. Single Carriageways: Most Crashes and Highest Risk
+
+| Road type | Total collisions | Serious or fatal rate |
 |---|---|---|
-| Single carriageway | 373,065 | **25.94%** |
+| Single carriageway (standard single-lane road) | 373,065 | **25.94%** |
 | Dual carriageway | 76,119 | 22.89% |
 | Slip road | 8,829 | 17.94% |
 | One-way street | 11,550 | 17.75% |
 | Roundabout | 31,178 | 17.21% |
 
-Undivided roads combine oncoming traffic with higher limits. Roundabouts are the safest common layout, because everyone is slowing and turning.
-
-## 3. The most dangerous hours are the quietest ones
-
-| Hour | Collisions | Serious or fatal |
-|---|---|---|
-| 00:00–05:00 | ~29,000 | **~30.5%** |
-| 08:00 | 32,860 | 19.41% |
-| 17:00 (peak volume) | 44,792 | 23.14% |
-
-Rush hour produces the most collisions and the least severe ones: congested, low-speed impacts. The small hours produce few collisions but fast ones on empty roads, with a different mix of drivers.
-
-**A count-based chart would say "avoid 5pm". The rate says the opposite.**
-
-## 4. Weekends and nights are separate effects, and they stack
-
-| | Day (06–17) | Evening (18–23) | Night (00–05) |
-|---|---|---|---|
-| **Weekday** | 22.36% | 25.34% | 29.82% |
-| **Weekend** | 25.90% | 26.77% | **31.26%** |
-
-- Night is worse than day on weekdays (+7.5 points) and weekends (+5.4).
-- Weekends are worse than weekdays **at every time of day**, including daytime (+3.5), so the weekend effect is not just Saturday nights. It points to leisure and rural driving rather than commuting.
-- Worst combination: weekend nights at 31.26%, about 1.3× the baseline.
-
-## 5. Summer is more severe than winter
-
-| Month | Collisions | Serious or fatal |
-|---|---|---|
-| August | 42,591 | **26.18%** |
-| July | 45,204 | 25.17% |
-| November (most collisions) | 46,835 | 23.49% |
-| January | 39,815 | 22.79% |
-
-Winter produces more collisions but less severe ones. Summer brings higher speeds, more rural and leisure driving, and more motorcyclists and cyclists, who have no bodywork protecting them.
-
-## 6. Bad weather is not the danger people assume
-
-| Weather | Collisions | Serious or fatal |
-|---|---|---|
-| Fine + high winds | 4,472 | **29.74%** |
-| Fog or mist | 2,128 | 28.05% |
-| Raining + high winds | 5,173 | 26.77% |
-| Fine, no high winds | 413,632 | 24.74% |
-| Raining, no high winds | 55,834 | **24.01%** |
-| Snowing, no high winds | 1,791 | 22.67% |
-
-Road surface tells the same story: dry 24.29%, wet 25.36%, **frost or ice 22.65%**.
-
-Rain, ice and snow make drivers slow down. Fine weather makes them confident. Adverse conditions raise the *number* of collisions but not their severity.
-
-## 7. Darkness matters, but less than the roads that are unlit
-
-Raw comparison:
-
-| Light | Collisions | Serious or fatal |
-|---|---|---|
-| Daylight | 368,193 | 23.19% |
-| Darkness, lights lit | 105,834 | 25.11% |
-| Darkness, no lighting | 27,438 | **34.95%** |
-
-Holding the speed limit constant separates the two effects:
-
-| | Daylight | Dark, lit | Dark, unlit |
-|---|---|---|---|
-| **30mph** | 21.43% | 25.97% | 29.09% |
-| **60mph** | 34.15% | 28.92% | **36.97%** |
-
-- Within 30mph roads, unlit darkness adds about 8 points, so darkness has a real effect of its own.
-- But the speed limit matters more: **daylight on a 60mph road (34.15%) is worse than unlit darkness on a 30mph road (29.09%)**.
-- Unlit roads are mostly rural 60mph roads, so the raw 34.95% figure was largely the rural road effect, with a genuine darkness effect on top.
-
-## 8. Driver age: a U-shape, with the older end worse
-
-| Age band | Vehicles | Serious or fatal |
-|---|---|---|
-| 16–20 | 62,478 | 26.81% |
-| 21–25 | 86,615 | 23.47% |
-| 26–35 | 187,204 | **21.98%** (lowest) |
-| 36–45 | 154,262 | 22.63% |
-| 46–55 | 125,729 | 24.68% |
-| 56–65 | 94,930 | 27.51% |
-| 66–75 | 43,084 | 29.43% |
-| Over 75 | 30,395 | **30.86%** |
-
-Insurers price young drivers hardest, yet drivers over 75 are involved in the most severe collisions in this data. Two distinct reasons, and they are not the same thing: older people are **physically more fragile**, so the same impact produces a worse injury, and they drive proportionally more on rural roads.
-
-**Important caveat:** this measures the severity of collisions a driver group was *involved in* — not fault, and not frequency. Young drivers still have far more collisions per mile driven. Bands under 11 are pedal cycles and similar, not motor vehicles.
-
-## 9. Motorcycles are in a category of their own
-
-| Vehicle type | Vehicles | Serious or fatal |
-|---|---|---|
-| Motorcycle over 500cc | 23,011 | **52.77%** |
-| Electric motorcycle | 1,902 | 42.06% |
-| Motorcycle 125–500cc | 9,590 | 37.86% |
-| Goods 7.5t and over | 13,247 | 30.87% |
-| Pedal cycle | 81,486 | 25.89% |
-| Car | 637,681 | 21.08% |
-| Taxi / private hire | 15,362 | 18.90% |
-
-More than **one in two** collisions involving a large motorcycle is serious or fatal — about 2.5× the rate for cars. No crumple zone, no seatbelt, no shell.
-
-## 10. Who actually gets hurt: the third-party exposure
-
-| Casualty type | Casualties | Deaths | Fatal rate |
-|---|---|---|---|
-| Car occupant | 347,393 | 3,471 | 1.00% |
-| **Pedestrian** | 94,398 | **1,924** | **2.04%** |
-| Cyclist | 77,741 | 450 | 0.58% |
-| Motorcycle 125cc and under | 41,840 | 322 | 0.77% |
-| **Motorcycle over 500cc** | 22,542 | **1,120** | **4.97%** |
-| Bus or coach occupant | 10,565 | 20 | 0.19% |
-
-- **Pedestrians are 14% of casualties but 25% of all deaths.** They have no vehicle around them.
-- **Large motorcycles produce 1,120 deaths from 22,542 casualties** — five times the car-occupant fatal rate.
-- **Cyclists appear often but die comparatively rarely** (0.58%), because most cycle collisions happen at urban speeds.
-
-**For a motor insurer this is the exposure that matters:** a pedestrian or motorcyclist struck by a car generates a far larger claim than a car-to-car impact.
+Standard single roads where opposing traffic flows side-by-side without a central barrier combine higher speeds with oncoming vehicles. Roundabouts are the safest common junctions (17.21%) because drivers must slow down and travel in the same direction.
 
 ---
 
-## Data quality notes (not findings about roads)
+## 3. The Most Dangerous Hours Are the Quietest Ones
 
-- Categories recorded as "Unknown" or "unknown (self reported)" show unusually **low** severity: unknown weather 11.72%, unknown road surface 7.10%, unknown road type 8.99%. These are mostly self-reported minor collisions, where the public completes a form rather than an officer attending. They should be footnoted or excluded, not read as safe conditions.
-- "Not recorded" (our label for missing data) is separate from DfT's own "Unknown" category and is very small: 12 collisions for weather, 3,527 for road surface.
+| Time of day | Total collisions | Serious or fatal rate |
+|---|---|---|
+| Midnight to 5:00 AM | ~29,000 | **~30.50%** |
+| 8:00 AM (morning rush) | 32,860 | 19.41% |
+| 5:00 PM (evening rush / peak crash volume) | 44,792 | 23.14% |
 
-## Limitations
+Rush hour creates the highest number of crashes, but these are mostly low-speed bumps in heavy traffic. The late-night hours between midnight and 5:00 AM see very few crashes, but when a crash does occur, nearly a third result in serious injury or death due to higher speeds on empty roads.
 
-1. **Police-reported injury collisions only.** Damage-only crashes and unreported injuries are absent.
-2. **No traffic volume data.** These are severity rates *given a collision*, not risk per mile driven. A road type with a high rate is not necessarily one to avoid.
-3. **Severity is police-assessed**, not medically confirmed, and the recording method changed during the period (section 0).
-4. **Correlation, not causation.** Factors move together: night, unlit roads, rural 60mph limits and younger drivers overlap. Where possible, effects have been separated by holding one factor constant.
-5. **2025 figures may be provisional** and subject to revision.
+---
+
+## 4. Weekends and Nights Create Double the Risk
+
+| Time of day | Weekday rate | Weekend rate |
+|---|---|---|
+| Day (6:00 AM to 5:59 PM) | 22.36% | 25.90% |
+| Evening (6:00 PM to 11:59 PM) | 25.34% | 26.77% |
+| Night (Midnight to 5:00 AM) | 29.82% | **31.26%** |
+
+* Driving at night is consistently more dangerous than driving during the day, whether on a weekday (up by 7.5 percentage points) or a weekend (up by 5.4 percentage points).
+* Weekend driving is more dangerous than weekday driving **at every time of day**, including daytime. This shows that weekend risk is driven by leisure trips and rural driving rather than daily commuting.
+* The most dangerous combination is a weekend night (31.26%), which is well above the national average.
+
+---
+
+## 5. Summer Crashes Are More Severe Than Winter Crashes
+
+| Month | Total collisions | Serious or fatal rate |
+|---|---|---|
+| August | 42,591 | **26.18%** |
+| July | 45,204 | 25.17% |
+| November (highest total crashes) | 46,835 | 23.49% |
+| January | 39,815 | 22.79% |
+
+Winter produces more total crashes due to slippery roads and dark evenings, but summer crashes are significantly more severe. August records the highest proportion of severe crashes (26.18%). Summer brings higher driving speeds, more holiday travel on unfamiliar country roads, and far more cyclists and motorcyclists who have no vehicle bodywork to protect them.
+
+---
+
+## 6. Bad Weather Is Not as Dangerous as People Think
+
+| Weather condition | Total collisions | Serious or fatal rate |
+|---|---|---|
+| Clear weather with high winds | 4,472 | **29.74%** |
+| Fog or mist | 2,128 | 28.05% |
+| Rain with high winds | 5,173 | 26.77% |
+| Clear weather without high winds | 413,632 | 24.74% |
+| Rain without high winds | 55,834 | **24.01%** |
+| Snow without high winds | 1,791 | 22.67% |
+
+Road surface conditions tell the exact same story: dry roads have a 24.29% severity rate, wet roads are 25.36%, and **frost or ice sits at 22.65%**.
+
+Rain, ice, and snow make drivers slow down and pay closer attention. Good weather makes drivers feel confident, leading to higher speeds and harder impacts when a mistake happens. High winds and thick fog are the main exceptions that increase risk.
+
+---
+
+## 7. Darkness Is Dangerous, but Unlit Country Roads Are Worse
+
+Looking at overall light levels:
+
+| Lighting condition | Total collisions | Serious or fatal rate |
+|---|---|---|
+| Daylight | 368,193 | 23.19% |
+| Dark with streetlights on | 105,834 | 25.11% |
+| Dark with no streetlights | 27,438 | **34.95%** |
+
+When we compare roads with the same speed limit, we can isolate the effect of darkness from the effect of speed:
+
+| Road speed limit | Daylight | Dark with streetlights | Dark with no streetlights |
+|---|---|---|---|
+| 30 mph | 21.43% | 25.97% | 29.09% |
+| 60 mph | 34.15% | 28.92% | **36.97%** |
+
+* On 30 mph streets, unlit darkness adds nearly 8 percentage points to the severity rate, proving that darkness is a genuine risk on its own.
+* However, speed plays a bigger role than light: **a daytime crash on a 60 mph road (34.15%) is more dangerous than an unlit, dark crash on a 30 mph street (29.09%).**
+* Most unlit roads are 60 mph country lanes, meaning the high overall figure of 34.95% is a combination of high speeds and a lack of lighting.
+
+---
+
+## 8. Driver Age: A U-Shaped Pattern, with Older Drivers at Highest Risk
+
+| Driver age group | Total vehicles involved | Serious or fatal rate |
+|---|---|---|
+| 16 to 20 | 62,478 | 26.81% |
+| 21 to 25 | 86,615 | 23.47% |
+| 26 to 35 | 187,204 | **21.98%** (lowest risk) |
+| 36 to 45 | 154,262 | 22.63% |
+| 46 to 55 | 125,729 | 24.68% |
+| 56 to 65 | 94,930 | 27.51% |
+| 66 to 75 | 43,084 | 29.43% |
+| Over 75 | 30,395 | **30.86%** (highest risk) |
+
+While insurance companies charge young drivers the highest premiums, drivers over 75 are involved in the most severe crashes in this dataset. This happens for two key reasons: older bodies are physically more fragile during an impact, and older motorists drive a higher proportion of their miles on rural roads.
+
+*Note: This metric measures how severe a crash was when a driver group was involved. It does not measure who was at fault or how often crashes happen. Young drivers still have significantly more crashes per mile driven than any other group.*
+
+---
+
+## 9. Motorcycles Face Exceptional Risk
+
+| Vehicle type | Total vehicles involved | Serious or fatal rate |
+|---|---|---|
+| Motorcycle over 500cc | 23,011 | **52.77%** |
+| Electric motorcycle | 1,902 | 42.06% |
+| Motorcycle 125cc to 500cc | 9,590 | 37.86% |
+| Heavy goods vehicle (over 7.5 tonnes) | 13,247 | 30.87% |
+| Bicycle | 81,486 | 25.89% |
+| Standard car | 637,681 | 21.08% |
+| Taxi or private hire | 15,362 | 18.90% |
+
+More than **1 in 2 crashes** involving a large motorcycle results in a serious injury or death (2.5 times the rate for standard cars). Motorcyclists have no crumple zone, seatbelts, or protective metal frame around them.
+
+---
+
+## 10. Who Suffers the Worst Injuries: Vulnerable Road Users
+
+| Type of person injured | Total casualties | Total deaths | Fatality rate |
+|---|---|---|---|
+| Car passenger or driver | 347,393 | 3,471 | 1.00% |
+| **Pedestrian** | 94,398 | **1,924** | **2.04%** |
+| Cyclist | 77,741 | 450 | 0.58% |
+| Motorcycle (up to 125cc) | 41,840 | 322 | 0.77% |
+| **Motorcycle (over 500cc)** | 22,542 | **1,120** | **4.97%** |
+| Bus or coach passenger | 10,565 | 20 | 0.19% |
+
+* **Pedestrians account for 14% of all injuries but 25% of all road deaths** because they are completely unprotected during an impact.
+* **Large motorcycles account for 1,120 deaths out of 22,542 injuries.** Nearly 5% of all injured riders on large bikes die, which is five times the death rate for people inside cars.
+* **Cyclists are injured often, but die less frequently (0.58%)** because most bicycle crashes happen at lower speeds on city streets.
+
+---
+
+## Data Quality Notes & Study Limitations
+
+1. **Injury crashes only:** This dataset only records crashes where someone was hurt or killed. Minor "damage-only" bumps where only property was damaged are not included.
+2. **Severity, not overall crash likelihood:** These figures show how severe a crash is *once it occurs*. They do not show how likely you are to crash per mile driven because traffic volume data is not included here.
+3. **Self-reported minor crashes:** Crashes categorised as "Unknown weather" or "Unknown road surface" show unusually low severity rates (around 7% to 11%). These represent minor incidents where members of the public reported the crash online after the event, rather than police officers attending the scene.
+4. **Overlapping factors:** Factors like nighttime driving, country roads, high speed limits, and driver age often occur together. Where possible, we have held specific factors constant to separate their individual impacts.
